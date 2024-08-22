@@ -17,12 +17,12 @@ const questions = [
         ]
     },
     {
-        question: "¿Quién pintó la Mona Lisa?",
+        question: "¿Quién tiene mejór desarrollo de personaje?",
         answers: [
-            { text: "Vincent Van Gogh", correct: false },
-            { text: "Pablo Picasso", correct: false },
-            { text: "Leonardo da Vinci", correct: true },
-            { text: "Claude Monet", correct: false }
+            { text: "Goku", correct: false },
+            { text: "Saitama", correct: false },
+            { text: "Naruto", correct: false },
+            { text: "Gon", correct: true }
         ]
     },
     {
@@ -35,12 +35,66 @@ const questions = [
         ]
     },
     {
-        question: "¿En qué año llegó el hombre a la luna?",
+        question: "¿Cómo se llama el profesor de JS?",
         answers: [
-            { text: "1965", correct: false },
-            { text: "1969", correct: true },
-            { text: "1971", correct: false },
-            { text: "1967", correct: false }
+            { text: "Roberto", correct: false },
+            { text: "Daniel", correct: true },
+            { text: "Lautaro", correct: false },
+            { text: "Juan", correct: false }
+        ]
+    },
+    {
+        question: "¿Cuál es el río más largo del mundo?",
+        answers: [
+            { text: "Nilo", correct: false },
+            { text: "Amazonas", correct: true },
+            { text: "Yangtsé", correct: false },
+            { text: "Mississippi", correct: false }
+        ]
+    },
+    {
+        question: "¿Quién escribió 'Don Quijote de la Mancha'?",
+        answers: [
+            { text: "William Shakespeare", correct: false },
+            { text: "Miguel de Cervantes", correct: true },
+            { text: "Gabriel García Márquez", correct: false },
+            { text: "Pablo Neruda", correct: false }
+        ]
+    },
+    {
+        question: "¿Qué elemento químico tiene el símbolo 'O'?",
+        answers: [
+            { text: "Oro", correct: false },
+            { text: "Oxígeno", correct: true },
+            { text: "Osmio", correct: false },
+            { text: "Oxalato", correct: false }
+        ]
+    },
+    {
+        question: "¿En qué continente se encuentra Egipto?",
+        answers: [
+            { text: "Asia", correct: false },
+            { text: "África", correct: true },
+            { text: "Europa", correct: false },
+            { text: "Oceanía", correct: false }
+        ]
+    },
+    {
+        question: "¿En qué año se lanzó League of legends?",
+        answers: [
+            {text: "2010", corrrect: false},
+            {text: "2008", correct: false},
+            {text: "2009", correct: true},
+            {text: "2011", correct: false},
+        ]
+    },
+    {
+        question: "¿Cómo se llama la última película de Jurassic World",
+        answers: [
+            {text: "Jurassic World Mundo Caído", correct: false},
+            {text: "Jurassic World ", correct: false},
+            {text: "Jurassic World 4", correct: false},
+            {text: "Jurassic World Dominion", correct: true},
         ]
     }
 ];
