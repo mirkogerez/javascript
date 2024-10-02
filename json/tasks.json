@@ -1,0 +1,18 @@
+[
+    {
+      "id": 1,
+      "text": "Comprar leche",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "text": "Llamar al dentista",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "Estudiar para el examen",
+      "completed": false
+    }
+  ]
+  

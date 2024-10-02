@@ -1,110 +1,101 @@
-const startButton = document.getElementById("start-btn");
-const questionContainer = document.getElementById("question-container");
-const questionElement = document.getElementById("question");
-const answerButtonsElement = document.getElementById("answer-buttons");
-const resultElement = document.getElementById("result");
+const taskInput = document.getElementById('task-input');
+const addTaskBtn = document.getElementById('add-task-btn');
+const taskList = document.getElementById('task-list');
+const totalTasksSpan = document.getElementById('total-tasks');
+const pendingTasksSpan = document.getElementById('pending-tasks');
+const completedTasksSpan = document.getElementById('completed-tasks');
 
-let shuffledQuestions, currentQuestionIndex, score;
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-const questions = [
-  {
-    question: "¿Cuál es la capital de Francia?",
-    answers: [
-      { text: "Madrid", correct: false },
-      { text: "París", correct: true },
-      { text: "Berlín", correct: false },
-      { text: "Roma", correct: false },
-    ],
-  },
-  {
-    question: "¿Quién tiene mejor desarrollo de personaje?",
-    answers: [
-      { text: "Goku", correct: false },
-      { text: "Saitama", correct: false },
-      { text: "Naruto", correct: false },
-      { text: "Gon", correct: true },
-    ],
-  },
-  {
-    question: "¿Cuál es el planeta más grande del sistema solar?",
-    answers: [
-      { text: "Marte", correct: false },
-      { text: "Júpiter", correct: true },
-      { text: "Saturno", correct: false },
-      { text: "Neptuno", correct: false },
-    ],
-  },
-  {
-    question: "¿Quién escribió 'Don Quijote de la Mancha'?",
-    answers: [
-      { text: "William Shakespeare", correct: false },
-      { text: "Miguel de Cervantes", correct: true },
-      { text: "Gabriel García Márquez", correct: false },
-      { text: "Pablo Neruda", correct: false },
-    ],
-  },
-];
-
-localStorage.setItem('triviaQuestions', JSON.stringify(questions));
-
-startButton.addEventListener("click", startGame);
-
-function startGame() {
-  startButton.classList.add("hide");
-  questionContainer.classList.remove("hide");
-
-  shuffledQuestions = JSON.parse(localStorage.getItem('triviaQuestions')).sort(() => Math.random() - 0.5);
-  currentQuestionIndex = 0;
-  score = 0;
-  setNextQuestion();
-}
-
-function setNextQuestion() {
-  resetState();
-  showQuestion(shuffledQuestions[currentQuestionIndex]);
-}
-
-function showQuestion(question) {
-  questionElement.innerText = question.question;
-  question.answers.forEach((answer) => {
-    const button = document.createElement("button");
-    button.innerText = answer.text;
-    button.classList.add("btn");
-    button.addEventListener("click", selectAnswer);
-    if (answer.correct) {
-      button.dataset.correct = answer.correct;
-    }
-    answerButtonsElement.appendChild(button);
-  });
-}
-
-function resetState() {
-  while (answerButtonsElement.firstChild) {
-    answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+const addTask = () => {
+  const taskText = taskInput.value.trim();
+  if (taskText === '') {
+    Swal.fire('Error', 'La tarea no puede estar vacía', 'error');
+    return;
   }
-  resultElement.classList.add("hide");
-}
 
-function selectAnswer(e) {
-  const selectedButton = e.target;
-  const correct = selectedButton.dataset.correct === 'true';
-  if (correct) {
-    score++;
-  }
+  const newTask = {
+    id: Date.now(),
+    text: taskText,
+    completed: false,
+  };
   
-  if (shuffledQuestions.length > currentQuestionIndex + 1) {
-    currentQuestionIndex++;
-    setNextQuestion();
-  } else {
-    endGame();
-  }
-}
+  tasks.push(newTask);
+  taskInput.value = '';
+  saveTasks();
+  renderTasks();
+};
 
-function endGame() {
-  questionContainer.classList.add("hide");
-  resultElement.classList.remove("hide");
-  resultElement.innerText = `Juego terminado. Tu puntaje es: ${score} de ${shuffledQuestions.length}`;
-  startButton.innerText = "Reiniciar Juego";
-  startButton.classList.remove("hide");
-  startButton.addEventListener("click", startGame);
-}
+const renderTasks = () => {
+  taskList.innerHTML = '';
+
+  tasks.forEach(task => {
+    const taskItem = document.createElement('li');
+    taskItem.classList.add('task-item', 'animate__animated', 'animate__fadeIn');
+    if (task.completed) taskItem.classList.add('completed');
+
+    taskItem.innerHTML = `
+      <span>${task.text}</span>
+      <div>
+        <button class="complete-btn" onclick="toggleComplete(${task.id})">✓</button>
+        <button class="edit-btn" onclick="editTask(${task.id})">✎</button>
+        <button class="delete-btn" onclick="deleteTask(${task.id})">✖</button>
+      </div>
+    `;
+    taskList.appendChild(taskItem);
+  });
+
+  updateTaskSummary();
+};
+
+const updateTaskSummary = () => {
+  const totalTasks = tasks.length;
+  const pendingTasks = tasks.filter(task => !task.completed).length;
+  const completedTasks = tasks.filter(task => task.completed).length;
+
+  totalTasksSpan.textContent = totalTasks;
+  pendingTasksSpan.textContent = pendingTasks;
+  completedTasksSpan.textContent = completedTasks;
+};
+
+const deleteTask = (taskId) => {
+  tasks = tasks.filter(task => task.id !== taskId);
+  saveTasks();
+  renderTasks();
+};
+
+const editTask = (taskId) => {
+  const task = tasks.find(task => task.id === taskId);
+  const newText = prompt('Editar tarea:', task.text);
+  if (newText) {
+    task.text = newText.trim();
+    saveTasks();
+    renderTasks();
+  }
+};
+
+const toggleComplete = (taskId) => {
+  const task = tasks.find(task => task.id === taskId);
+  task.completed = !task.completed;
+  saveTasks();
+  renderTasks();
+};
+
+const saveTasks = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
+const loadTasksFromAPI = async () => {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
+    const data = await response.json();
+    tasks = data.map(task => ({ id: task.id, text: task.title, completed: task.completed }));
+    saveTasks();
+    renderTasks();
+  } catch (error) {
+    Swal.fire('Error', 'No se pudieron cargar las tareas desde la API', 'error');
+  }
+};
+
+addTaskBtn.addEventListener('click', addTask);
+window.addEventListener('DOMContentLoaded', loadTasksFromAPI);

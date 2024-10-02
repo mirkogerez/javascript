@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Trivia</title>
-    <link rel="stylesheet" href="./css/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas Completa</title>
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>¡Te invito a participar de esta trivia RANDOM!</h1>
-        <div id="question-container" class="hide">
-            <p id="question">Pregunta</p>
-            <div id="answer-buttons" class="btn-container">
-            </div>
-        </div>
-        <button id="start-btn" class="start-btn btn">Iniciar Juego</button>
-        <p id="result" class="hide"></p>
+  <div class="container">
+    <h1 class="title">Lista de Tareas</h1>
+    <div id="task-form">
+      <input type="text" id="task-input" placeholder="Nueva tarea...">
+      <button id="add-task-btn">Añadir Tarea</button>
     </div>
-    <script src="./js/main.js"></script>
+
+    <div id="task-list-container">
+      <ul id="task-list"></ul>
+    </div>
+
+    <div id="task-summary">
+      <p>Total tareas: <span id="total-tasks">0</span></p>
+      <p>Pendientes: <span id="pending-tasks">0</span></p>
+      <p>Completadas: <span id="completed-tasks">0</span></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./js/main.js"></script>
 </body>
 </html>
